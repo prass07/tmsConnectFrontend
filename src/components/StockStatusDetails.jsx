@@ -1,22 +1,26 @@
 import React from "react";
 
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { Summarize } from "@mui/icons-material";
+import { CheckCircle, Pending, Refresh, Summarize } from "@mui/icons-material";
 
 const StockStatusDetails = () => {
   const columns = [
     {
       field: "status",
       headerName: "Status",
-      width: 100,
-      //   renderCell: (params) => {
-      //     return (
-      //       <Box>
-      //         <Typography variant="span">{params?.row?.status}</Typography>
-      //       </Box>
-      //     );
-      //   },
+      width: 70,
+      renderCell: (params) => {
+        return (
+          <Box>
+            {params.row.status === "completed" ? (
+              <CheckCircle sx={{ color: "#8BCD50" }} />
+            ) : (
+              <Pending sx={{ color: "#F9D876" }} />
+            )}
+          </Box>
+        );
+      },
     },
     {
       field: "client",
@@ -84,11 +88,16 @@ const StockStatusDetails = () => {
   return (
     <Card>
       <CardContent>
-        <Box display="flex" alignItems="center" gap="5px">
-          <Summarize color="#0A2D50" />
-          <Typography variant="span" fontSize="20px" color="#0A2D50">
-            Order Status
-          </Typography>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex" alignItems="center" gap="5px">
+            <Summarize color="#0A2D50" />
+            <Typography variant="span" fontSize="20px" color="#0A2D50">
+              Order Status
+            </Typography>
+          </Box>
+          <IconButton>
+            <Refresh />
+          </IconButton>
         </Box>
         <Box
           style={{

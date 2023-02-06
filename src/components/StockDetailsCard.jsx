@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Autocomplete,
@@ -6,11 +6,16 @@ import {
   Button,
   Card,
   CardContent,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Switch,
   TextField,
   Typography,
 } from "@mui/material";
 import { LocalMall } from "@mui/icons-material";
+import ReactThreeToggle from "react-three-toggle";
 
 const clientNames = [
   {
@@ -27,7 +32,25 @@ const clientNames = [
   },
 ];
 
+const orderTypes = [
+  {
+    label: "Target",
+    id: 1,
+  },
+  {
+    label: "Market",
+    id: 2,
+  },
+];
+
 const StockDetailsCard = () => {
+  const [sellOrBuy, setSellOrBuy] = useState();
+  const [orderType, setOrderType] = useState("");
+
+  const handleToggleChange = (value) => setSellOrBuy(value);
+
+  const handleOrderTypeChange = (event) => setOrderType(event.target.value);
+
   return (
     <Card>
       <CardContent>
@@ -38,6 +61,15 @@ const StockDetailsCard = () => {
           </Typography>
         </Box>
         <Box display="flex" justifyContent="flex-end">
+          <FormControl>
+            <InputLabel>Order Type</InputLabel>
+            <Select value={orderType} onChange={handleOrderTypeChange}>
+              {orderTypes?.map((type) => {
+                return <MenuItem value={type?.label}>{type?.labe}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+
           <Autocomplete
             options={clientNames.map((option) => option.label)}
             sx={{ width: 300 }}
@@ -84,9 +116,13 @@ const StockDetailsCard = () => {
               type={"number"}
             />
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" gap="5px">
             <Typography variant="span">Sell</Typography>
-            <Switch />
+            <ReactThreeToggle
+              values={["sell", "null", "buy"]}
+              initialValue="null"
+              onChange={handleToggleChange}
+            />
             <Typography variant="span">Buy</Typography>
           </Box>
         </Box>
